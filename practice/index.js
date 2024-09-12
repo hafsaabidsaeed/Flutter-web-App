@@ -4,7 +4,7 @@ dotenv.config();
 const cors = require("cors");
 require("./config/dbCon");
 const userRoute = require("./routes/user");
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4004;
 const app = express();
 
 app.use(

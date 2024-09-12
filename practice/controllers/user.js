@@ -1,57 +1,45 @@
 const User = require("../models/user");
 //const { STATUS_CODE, ERRORS, SUCCESS_MSG } = require("../constants/index");
-//const authService = require("../services/authService");
+const authService = require("../services/authService");
 
 const createUser = async (req, res) => {
 
   try {
 
     const {
-      username,
-      email,
-      password,
       firstname,
       lastname,
-      website,
-      contact_no,
-      address,
-      company_name,
+      email,
+      password,
       role,
-      department,
     } = req.body;
 
     // Hash password
     const hashPassword = await authService.hashPassword(password);
 
     const newUser = {
-      username: username,
-      email: email,
-      password: hashPassword,
       firstname: firstname,
       lastname: lastname,
-      website: website,
-      contact_no: contact_no,
-      address: address,
-      company_name: company_name,
+      email: email,
+      password: hashPassword,
       role: role || "employee",
-      department: department || null,
     };
 
     await User.create(newUser);
 
     return res
-      .status(STATUS_CODE.CREATED)
-      .json({ success: true, message: SUCCESS_MSG.AUTH_MSG.USER_REGISTER });
+      .status(201)
+      .json({ success: true, message: "user has been registered" });
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(STATUS_CODE.CONFLICT).json({
+      return res.status(409).json({
         success: false,
-        message: ERRORS.ERRORS.EMAIL_ALREADY_EXISTS,
+        message: "Internal server error",
       });
     } else {
-      return res.status(STATUS_CODE.SERVER_ERROR).json({ 
+      return res.status(500).json({ 
         success: false,
-        message: ERRORS.ERRORS.SERVER_ERROR,
+        message: "Internal server error",
         error: error.message,
       });
     }
@@ -269,7 +257,7 @@ const getSingleUser = async (req, res) => {
 // };
 
 module.exports = {
-  //createUser,
+  createUser,
   //loginUser,
   getAllUsers,
   getSingleUser,

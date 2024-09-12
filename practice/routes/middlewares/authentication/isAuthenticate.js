@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
     const bearerHeader = req.headers['authorization']
     const bearer = bearerHeader.split(' ');
     const token = bearer[1];
-    //console.log('token: ',token);
+    console.log('token: ',token);
 
     if (!token || token === "null") {
       return res

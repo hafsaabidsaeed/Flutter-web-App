@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  //createUser,
+  createUser,
   //loginUser,
   getAllUsers,
   getSingleUser,
@@ -9,19 +9,19 @@ const {
   //updateUser,
 } = require("../controllers/user");
 
-// const {
-//   validSignUp,
-//   validLogin,
-// } = require("../middlewares/validations/userValidations");
+const {
+  validSignUp,
+  validLogin,
+} = require("../routes/middlewares/validations/userValidations");
 
-//const isAuthorized = require("../middlewares/authorization/isAuthorize");
+const isAuthorized = require("../middlewares/authorization/isAuthorize");
 
-// router.post(
-//   "/register",
-//   isAuthorized(["super-admin", "admin", "lead"]),
-//   createUser
-// );
-//router.post("/login", loginUser);
+router.post(
+  "/register",
+  isAuthorized(["super-admin", "admin", "lead"]),
+  createUser
+);
+// router.post("/login", loginUser);
 router.get("/users/list", getAllUsers);
 router.get("/:id", getSingleUser);
 //router.put("/update/:id", updateUser);

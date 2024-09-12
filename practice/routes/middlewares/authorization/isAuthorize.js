@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
-const { STATUS_CODE, ERRORS } = require("../../constants");
+// const { STATUS_CODE, ERRORS } = require("../../constants");
 
 const isAuthorize = (allowedRoles) => {
   return (req, res, next) => {
     if (!req.headers.authorization) {
       return res
-        .status(STATUS_CODE.UN_AUTHORIZED)
-        .json({ success: false, message: ERRORS.ERRORS.UN_AUTHORIZE });
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
     
 const bearerHeader = req.headers['authorization']
@@ -16,8 +16,8 @@ const token = bearer[1];
 
     if (!token || token === "null") {
       return res
-        .status(STATUS_CODE.UN_AUTHORIZED)
-        .json({ success: false, message: ERRORS.ERRORS.UN_AUTHORIZE });
+        .status(404)
+        .json({ success: false, message: "User not registered" });
     }
 
     try {
@@ -27,14 +27,14 @@ const token = bearer[1];
       // Check user's role
       if (!allowedRoles.includes(req.user.role)) {
         return res
-          .status(STATUS_CODE.FORBIDDEN)
-          .json({ success: false, message: ERRORS.ERRORS.FORBIDDEN });
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
       }
       next();
     } catch (error) {
-      return res.status(STATUS_CODE.UN_AUTHORIZED).json({
+      return res.status(500).json({
         success: false,
-        message: ERRORS.ERRORS.UN_AUTHORIZE,
+        message: "Internal server error",
         error: error.message,
       });
     }
